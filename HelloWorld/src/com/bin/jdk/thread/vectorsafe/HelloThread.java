@@ -1,7 +1,9 @@
 package com.bin.jdk.thread.vectorsafe;
 
 import java.util.*;
-
+/*Vector的好处在于可以是线程安全的，像ArrayList，我们添加一个元素时，先要把下标加1，然后再赋值，
+所以如果有多个线程同时向一个ArrayList里面添加东西时，由于不是线程安全的所以就有可能出错。
+我们这时要用ArrayList的话，必须保证ArrayList的add操作必须是线程安全的，要放在synchronized 中，，，，*/
 //实现Runnable接口的线程  
 public class HelloThread implements Runnable {  
     String name;  
