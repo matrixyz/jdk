@@ -7,9 +7,10 @@ import java.util.*;
 //实现Runnable接口的线程  
 public class HelloThread implements Runnable {  
     String name;  
-    List<String> v;  
+   // List<String> v;  
+    Vector<String> v;  
   
-    HelloThread(String name, List<String> v) {  
+    HelloThread(String name, Vector<String> v) {  
         this.name = name;  
         this.v = v;  
     }  
@@ -21,7 +22,7 @@ public class HelloThread implements Runnable {
             System.out.println(name + " list size is " + v.size());  
   
             try {  
-                Thread.sleep(10);  
+                Thread.sleep(1000);  
             } catch(InterruptedException e) {  
                 System.out.println(e.getMessage());  
             }  
@@ -30,7 +31,7 @@ public class HelloThread implements Runnable {
   
     public static void main(String args[]) throws InterruptedException {  
   
-        List<String> v = new ArrayList<String>();  
+    	Vector<String> v = new Vector<String>();  
   
         HelloThread hello1 = new HelloThread("hello1", v);  
         HelloThread hello2 = new HelloThread("hello2", v);  
