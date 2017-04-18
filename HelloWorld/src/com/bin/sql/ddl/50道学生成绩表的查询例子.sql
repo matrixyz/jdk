@@ -98,7 +98,7 @@ select sid,sname  from student where sid in(
   select Sid from SC ,Course ,Teacher where SC.Cid=Course.Cid and Teacher.Tid=Course.Tid and Teacher.Tname='叶平' group by Sid 
   having count(SC.Cid)=(select count(Cid) from Course,Teacher  where Teacher.Tid=Course.Tid and Tname='叶平'));
     
-  --8、查询课程编号“002”的成绩比课程编号“001”课程低的所有同学的学号、姓名；   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% hard andstand
+  --8、查询课程编号“002”的成绩比课程编号“001”课程低的所有同学的学号、姓名；   %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% hard understand
 
   Select Sid,Sname from (
       select Student.Sid,Student.Sname,score ,(select score from SC SC_2 where SC_2.Sid=Student.Sid and SC_2.Cid=2) score2 
@@ -116,6 +116,46 @@ select sid,sname  from student where sid in(
     from Student,SC 
     where Student.Sid=SC.Sid group by  Student.Sid,Student.Sname having count(Cid) <
     (select count(Cid) from Course); 
+    
+    
+    select student.sname,sc.sid,sc.cid from student,sc where student.sid=sc.sid  and cid in(select cid from sc where sid=1);
+    
+--11、查询至少有一门课与学号为“1001”的同学所学相同的同学的学号和姓名；    
+    select distinct(student.Sid),Sname from Student,SC where 
+Student.Sid=SC.Sid and Cid in (select Cid from SC where Sid=1);
+    
+    
+    
+--12、查询至少学过学号为“001”同学所有一门课的其他同学学号和姓名；
+select distinct(s.sname),s.sid from sc,student s where  s.sid=sc.sid and sc.cid in (
+
+select  cid from sc where sid=1)
+    
+    
+    --13、把“SC”表中“叶平”老师教的课的成绩都更改为此课程的平均成绩； 
+update SC   set  score=(
+    select t from(
+           select avg(SC_2.score) as t  from SC SC_2  where SC_2.Cid = (
+           select Course.cid from Course,Teacher  where  
+           Course.Tid=Teacher.Tid and Teacher.Tname='叶平' )  
+    ) as xx
+)
+where  cid=(
+    select Course.cid from Course,Teacher  where  
+    Course.Tid=Teacher.Tid and Teacher.Tname='叶平' )      
+    
+ --17、按平均成绩从高到低显示所有学生的“数据库”、“企业管理”、“英语”三门的课程成绩，按如下形式显示： 学生ID,,数据库,企业管理,英语,有效课程数,有效平均分
+  SELECT Sid as 学生ID 
+        ,(SELECT score FROM SC WHERE SC.Sid=t.Sid AND Cid=1) AS 数学
+        ,(SELECT score FROM SC WHERE SC.Sid=t.Sid AND Cid=2) AS 语文
+        ,(SELECT score FROM SC WHERE SC.Sid=t.Sid AND Cid=3) AS 英语 
+        ,COUNT(*) AS 有效课程数, AVG(t.score) AS 平均成绩 
+    FROM SC AS t 
+    GROUP BY Sid 
+    ORDER BY avg(t.score)  
+
+
+    
     
     
   
