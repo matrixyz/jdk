@@ -1,13 +1,16 @@
 package com.bin.jdk.thread.vectorsafe;
 
 import java.util.*;
-
+/*Vector的好处在于可以是线程安全的，像ArrayList，我们添加一个元素时，先要把下标加1，然后再赋值，
+所以如果有多个线程同时向一个ArrayList里面添加东西时，由于不是线程安全的所以就有可能出错。
+我们这时要用ArrayList的话，必须保证ArrayList的add操作必须是线程安全的，要放在synchronized 中，，，，*/
 //实现Runnable接口的线程  
 public class HelloThread implements Runnable {  
     String name;  
-    List<String> v;  
+   // List<String> v;  
+    Vector<String> v;  
   
-    HelloThread(String name, List<String> v) {  
+    HelloThread(String name, Vector<String> v) {  
         this.name = name;  
         this.v = v;  
     }  
@@ -19,7 +22,7 @@ public class HelloThread implements Runnable {
             System.out.println(name + " list size is " + v.size());  
   
             try {  
-                Thread.sleep(10);  
+                Thread.sleep(1000);  
             } catch(InterruptedException e) {  
                 System.out.println(e.getMessage());  
             }  
@@ -28,7 +31,7 @@ public class HelloThread implements Runnable {
   
     public static void main(String args[]) throws InterruptedException {  
   
-        List<String> v = new ArrayList<String>();  
+    	Vector<String> v = new Vector<String>();  
   
         HelloThread hello1 = new HelloThread("hello1", v);  
         HelloThread hello2 = new HelloThread("hello2", v);  
